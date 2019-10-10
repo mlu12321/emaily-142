@@ -1,16 +1,20 @@
-const passport = require('passport'); //original npm module
+const passport = require('passport');
 
 module.exports = app => {
   app.get(
     '/auth/google',
     passport.authenticate('google', {
+      //google is the argument in passport
       scope: ['profile', 'email']
     })
   );
 
   app.get(
     '/auth/google/callback',
-    passport.authenticate('google'), //use google strategy
+    //request contain code from google after user grant permission
+    //passport send the code back to google to get profile detail
+    //auth flow finish, passport call callback
+    passport.authenticate('google'),
     (req, res) => {
       res.redirect('/surveys');
     }

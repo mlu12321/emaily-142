@@ -5,12 +5,14 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Survey');
 require('./services/passport'); //execute
 
 mongoose.connect(keys.mongoURI);
 
 const app = express(); // generate an express app
 
+//middlewares
 app.use(bodyParser.json());
 app.use(
   cookieSession({
@@ -21,8 +23,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+//route handlers
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // Express serve production assets for some route (get request)
